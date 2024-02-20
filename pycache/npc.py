@@ -1,6 +1,5 @@
-from typing import Any
 import pygame
-from entity import *
+from .entity import Entity
 
 class NPC(Entity):
     def __init__(self, x, y, width, height, color=None, image=None):
@@ -36,5 +35,5 @@ class NPC(Entity):
         screen.blit(text_surface, text_rect)
     
     def is_player_nearby(self, player_x, player_y, distance_threshold=100):
-        distance = ((self.x - player_x)**2 + (self.y - player_y)**2) * 0.5
+        distance = ((self.x - player_x)**2 + (self.y - player_y)**2) ** 0.5
         return distance < distance_threshold

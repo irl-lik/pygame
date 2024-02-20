@@ -10,10 +10,6 @@ class Entity():
         self.image = image if image else None
         if not self.image and not self.color:
             raise ValueError("Either image or color must be specified")
-        
-        self.isJumping = False
-        self.isFalling = False
-        self.jumpCounter = 0
     
     def draw(self, screen):
         if self.image:
