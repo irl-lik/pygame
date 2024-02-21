@@ -4,6 +4,8 @@ class Entity():
     def __init__(self, x, y, width, height, color=None, image=None):
         self.x = x
         self.y = y
+        self.dx = x
+        self.dy = y
         self.width = width
         self.height = height
         self.color = color if color else None

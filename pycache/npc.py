@@ -10,18 +10,19 @@ class NPC(Entity):
     def set_name(self, name):
         self.name = name
     
-    def set_dialogue(self, dialogue):
-        self.dialogue = dialogue
 
     def draw(self, screen):
         super().draw(screen)
         if not self.name:
             return
         
-        font = pygame.font.Font("arial", 24)
+        font = pygame.font.Font(None, 24)
         text_surface = font.render(self.name, True, (255, 255, 255))
         text_rect = text_surface.get_rect(center=(self.x + self.width // 2, self.y - 20))  # Получаем прямоугольник для позиционирования текста точно сверху Entrity
         screen.blit(text_surface, text_rect)
+    
+    def set_dialogue(self, dialogue):
+        self.dialogue = dialogue
     
     def display_dialogue(self, screen, player_x, player_y):
         if not self.dialogue:
