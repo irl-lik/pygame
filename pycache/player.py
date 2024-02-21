@@ -10,6 +10,7 @@ class Player(Entity):
         self.name = "Вы"
         self.isJumping = False
         self.jumpCounter = 0
+        self.jumpWait = 0
         self.speed_x = 0
         self.speed_y = 0
         self.tiles_list = level_rect_list()
@@ -46,14 +47,17 @@ class Player(Entity):
             elif self.speed_x < 0:
                 self.speed_x += 2
 
-        if keys[pygame.K_SPACE] and not self.isJumping:
+        if keys[pygame.K_SPACE] and not self.isJumping and self.jumpWait == 0:
             self.isJumping = True
             self.jumpCounter = 10
+            self.jumpWait = 20
         if self.isJumping:
             self.speed_y = self.jumpCounter * 4 + 4
-            print(self.speed_y)
             if self.jumpCounter != -10:
                 self.jumpCounter -= 1
+
+        if self.jumpWait > 0: self.jumpWait -= 1
+        print(self.jumpWait)
 
         self.speed_y -= 4
 
@@ -79,6 +83,9 @@ class Player(Entity):
 
         self.x += self.speed_x
         self.y -= self.speed_y
+
+    def get_rect(self):
+        return pygame.Rect(self.x, self.y, self.width, self.height)
 
     def get_pos(self):
         return self.x, self.y

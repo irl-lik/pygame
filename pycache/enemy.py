@@ -48,6 +48,11 @@ class Enemy(Entity):
                 self.x_speed -= min(self.speed / 10, self.x_speed)
             else:
                 self.x_speed += min(self.speed / 10, -self.x_speed)
+    
+    def camera_upd(self, camera_pos):
+        self.x -= camera_pos[0]
+        self.y -= camera_pos[1]
+
     def is_player_nearby(self, player_x, player_y, distance_threshold=100):
         distance = ((self.x - player_x)**2 + (self.y - player_y)**2) ** 0.5
         return distance < distance_threshold

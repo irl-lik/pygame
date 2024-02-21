@@ -2,10 +2,16 @@ import pygame
 from pycache.enemy import Enemy
 from pycache.player import Player
 from pycache.levels.level1 import level_rect_list
+from pycache.camera import Camera
 
 pygame.init()
+tiles_list = level_rect_list()
 
 WIDTH, HEIGHT = 1400, 800
+total_level_width  = len(tiles_list[0]) * 40 # Высчитываем фактическую ширину уровня
+total_level_height = len(tiles_list) * 40  # высоту
+
+camera = Camera(total_level_width, total_level_height) 
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -23,7 +29,6 @@ player = Player(player_x, player_y, player_width, player_height, (0, 255, 0))
 
 enemy1 = Enemy(WIDTH, player_y, 100, 50, 5, (255, 0, 0))
 enemy1.set_name("Enemy 1")
-tiles_list = level_rect_list()
 
 while running:
     clock.tick(30)
@@ -34,6 +39,9 @@ while running:
 
     player.update()
     player_x, player_y = player.get_pos()
+    player_rect = player.get_rect()
+
+    camera.get_pos()
 
     enemy1.move_towards_player(player_x, player_y, player_width, player_height, 500)
     enemy1.draw(screen)
