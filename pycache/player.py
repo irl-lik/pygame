@@ -57,7 +57,6 @@ class Player(Entity):
                 self.jumpCounter -= 1
 
         if self.jumpWait > 0: self.jumpWait -= 1
-        print(self.jumpWait)
 
         self.speed_y -= 4
 
@@ -65,14 +64,22 @@ class Player(Entity):
         for tile in self.tiles_list:
             if not player_rect.colliderect(tile): continue
 
-            self.speed_x = 0
+            if self.speed_x > 0:
+                self.speed_x = 0
+                self.x = tile.x - self.width
+            elif self.speed_x < 0:
+                self.speed_x = 0
+                self.x = tile.x + tile.width
+            else:
+                self.speed_x = 0
 
         player_rect = pygame.Rect(self.x, self.y - self.speed_y, self.width, self.height)
         for tile in self.tiles_list:
             if not player_rect.colliderect(tile): continue
 
             if self.speed_y > 0:
-                self.speed_y = self.y - (tile.y + tile.height)
+                self.speed_y = 0
+                self.y = tile.y + tile.height
             elif self.speed_y < 0:
                 self.speed_y = 0
                 self.y = tile.y - self.height
