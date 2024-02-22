@@ -1,24 +1,27 @@
 import pygame
 
 class Camera():
-    def __init__(self, width, height):
-        self.state = pygame.Rect(0, 0, width, height)
+    def __init__(self, total_width, total_height, win_width, win_height):
+        self.state = pygame.Rect(0, 0, total_width, total_height)
+        self.win_width = win_width
+        self.win_height = win_height
 
     
     def get_pos(self):
         return self.state.x, self.state.y
     
     def camera_func(self, target_rect, FACT_WIDTH, FACT_HEIGHT):
-        l, t, _, _ = target_rect
-        _, _, w, h = self.state
-        l, t = -l + FACT_WIDTH / 2, -t + FACT_HEIGHT / 2
+        target_x = target_rect.x
+        target_y = target_rect.y
+        camera_x = target_x - self.win_width // 2
+        camera_y = target_y - self.win_height // 2
 
-        l = min(0, l)                           # Не движемся дальше левой границы
-        l = max(-(self.state.width - FACT_WIDTH), l)   # Не движемся дальше правой границы
-        t = max(-(self.state.height - FACT_HEIGHT), t) # Не движемся дальше нижней границы
-        t = min(0, t)                           # Не движемся дальше верхней границы
+        camera_x = max(camera_x, 0)
+        camera_x = min(camera_x, FACT_WIDTH - self.win_width)
+        camera_y = max(camera_y, 0)
+        camera_y = min(camera_y, FACT_HEIGHT - self.win_height)
 
-        return pygame.Rect(l, t, w, h)
+        return pygame.Rect(camera_x, camera_y, FACT_WIDTH, FACT_HEIGHT)
 
-    def update(self, target, FACT_WIDTH, FACT_HEIGHT):
-        self.state = self.camera_func(target, FACT_WIDTH, FACT_HEIGHT)
+    def update(self, target_rect, FACT_WIDTH, FACT_HEIGHT):
+        self.state = self.camera_func(target_rect, FACT_WIDTH, FACT_HEIGHT)

@@ -12,9 +12,9 @@ clock = pygame.time.Clock()
 
 # Инициализация уровня и камеры
 tiles_list = level_rect_list()
-total_level_width = len(tiles_list[0]) * 40
-total_level_height = len(tiles_list) * 40
-camera = Camera(total_level_width, total_level_height)
+total_level_width = 39 * 40
+total_level_height = 26 * 40
+camera = Camera(total_level_width, total_level_height, WIDTH, HEIGHT)
 
 # Инициализация игрока и противника
 player_x = WIDTH / 2
@@ -35,18 +35,19 @@ while running:
     # Обновление и отображение игрока и противника
     player.update()
     player_x, player_y = player.get_pos()
-    enemy1.move_towards_player(player_x, player_y, player_width, player_height, 500)
-    enemy1.draw(screen)
-    player.draw(screen)
-
     # Обновление камеры
     camera.update(player.get_rect(), total_level_width, total_level_height)
     camera_x, camera_y = camera.get_pos()
+    # Обновление врагов
+    enemy1.move_towards_player(player_x - camera_x, player_y - camera_y, player_width, player_height, 500)
+    enemy1.draw(screen)
+    # Отрисовка игрока с учётом камеры
+    player.draw(screen, camera_x, camera_y)
+
+    print(camera.get_pos())
     # Применение сдвига камеры к всем объектам на уровне
     for tile in tiles_list:
-        tile.x -= camera_x
-        tile.y -= camera_y
-        pygame.draw.rect(screen, (255, 58, 81), tile)
+        pygame.draw.rect(screen, (255, 58, 81), (tile.x - camera_x, tile.y - camera_y, tile.width, tile.height))
 
     # Обновление экрана
     pygame.display.update()

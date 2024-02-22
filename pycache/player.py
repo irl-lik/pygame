@@ -20,12 +20,16 @@ class Player(Entity):
     def set_name(self, name):
             self.name = name
 
-    def draw(self, screen):
-        super().draw(screen)
+    def draw(self, screen, camera_x, camera_y):
+        if self.image:
+            screen.blit(self.image, (self.x - camera_x, self.y - camera_y))
+        elif self.color:
+            pygame.draw.rect(screen, self.color, (self.x - camera_x, self.y - camera_y, self.width, self.height))
+        
         if not self.name:
             return
         
-        text_rect = self.text_surface.get_rect(center=(self.x + self.width // 2, self.y - 20))  # Получаем прямоугольник для позиционирования текста точно сверху Entrity
+        text_rect = self.text_surface.get_rect(center=(self.x - camera_x + self.width // 2, self.y - camera_y - 20))  # Получаем прямоугольник для позиционирования текста точно сверху Entrity
         screen.blit(self.text_surface, text_rect)
 
     def update(self):
