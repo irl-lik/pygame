@@ -39,7 +39,7 @@ while running:
     camera.update(player.get_rect(), total_level_width, total_level_height)
     camera_x, camera_y = camera.get_pos()
     # Обновление врагов
-    enemy1.move_towards_player(player_x - camera_x, player_y - camera_y, player_width, player_height, 500)
+    enemy1.move_towards_player(player_x - camera_x, player_y, player_width, player_height, 500)
     enemy1.draw(screen)
     # Отрисовка игрока с учётом камеры
     player.draw(screen, camera_x, camera_y)
