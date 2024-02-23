@@ -4,7 +4,7 @@ from .levels.level1 import level_rect_list
 
 
 class Player(Entity):
-    def __init__(self, x, y, width, height, color=None, image=None):
+    def __init__(self, x, y, width, height, speed, tiles_width, tiles_height, color=None, image=None):
         super().__init__(x, y, width, height, color, image)
 
         self.name = "Вы"
@@ -12,9 +12,11 @@ class Player(Entity):
         self.isFalling = True
         self.jumpCounter = 0
         self.jumpWait = 0
+        self.maxJumpWait = tiles_height // 2
+        self.speed = speed
         self.speed_x = 0
         self.speed_y = 0
-        self.tiles_list = level_rect_list()
+        self.tiles_list = level_rect_list(tiles_width, tiles_height)
         font = pygame.font.Font(None, 24)
         self.text_surface = font.render(self.name, True, (255, 255, 255))
 
@@ -38,24 +40,24 @@ class Player(Entity):
 
         if keys[pygame.K_a] and keys[pygame.K_d]:
             if self.speed_x > 0:
-                self.speed_x -= 2
+                self.speed_x -= self.speed
             elif self.speed_x < 0:
-                self.speed_x += 2
+                self.speed_x += self.speed
         elif keys[pygame.K_a]:
-            self.speed_x = max(self.speed_x - 2, -8)
+            self.speed_x = max(self.speed_x - self.speed, -self.speed * 4)
         elif keys[pygame.K_d]:
-            self.speed_x = min(self.speed_x + 2, 8)
+            self.speed_x = min(self.speed_x + self.speed, self.speed * 4)
         
         if not keys[pygame.K_a] and not keys[pygame.K_d]:
             if self.speed_x > 0:
-                self.speed_x -= 2
+                self.speed_x -= self.speed
             elif self.speed_x < 0:
-                self.speed_x += 2
+                self.speed_x += self.speed
 
         if keys[pygame.K_SPACE] and not self.isJumping and self.jumpWait == 0 and not self.isFalling:
             self.isJumping = True
             self.jumpCounter = 10
-            self.jumpWait = 20
+            self.jumpWait = self.maxJumpWait
         if self.isJumping:
             self.speed_y = self.jumpCounter * 4 + 4
             if self.jumpCounter != -10:

@@ -3,7 +3,7 @@ from .entity import Entity
 from .levels.level1 import level_rect_list
 
 class Enemy(Entity):
-    def __init__(self, x, y, absolute_y, width, height, speed, color=None, image=None):
+    def __init__(self, x, y, absolute_y, width, height, tiles_width, tiles_height, speed, color=None, image=None):
         super().__init__(x, y, width, height, color, image)
         self.name = None
         self.speed = speed
@@ -13,7 +13,7 @@ class Enemy(Entity):
         self.isJumping = False
         self.isFalling = True
         self.jumpCounter = 0
-        self.tiles_list = level_rect_list()
+        self.tiles_list = level_rect_list(tiles_width, tiles_height)
 
     def set_name(self, name):
         self.name = name
