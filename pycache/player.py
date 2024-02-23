@@ -77,6 +77,7 @@ class Player(Entity):
                 self.x = tile.x + tile.width
             else:
                 self.speed_x = 0
+            break
 
         self.isFalling = True
         player_rect = pygame.Rect(self.x, self.y - self.speed_y, self.width, self.height)
@@ -93,8 +94,10 @@ class Player(Entity):
                 self.isJumping = False
             else:
                 self.speed_y = 0
+            
             self.jumpCounter = 0
             self.isFalling = False
+            break
 
         self.x += self.speed_x
         self.y -= self.speed_y
