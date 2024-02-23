@@ -1,3 +1,4 @@
+from typing import Any
 import pygame
 
 class Camera():
@@ -9,7 +10,7 @@ class Camera():
     
     def get_pos(self):
         return self.state.x, self.state.y
-    
+
     def camera_func(self, target_rect, FACT_WIDTH, FACT_HEIGHT):
         target_x = target_rect.x
         target_y = target_rect.y

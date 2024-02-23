@@ -9,6 +9,7 @@ class Player(Entity):
 
         self.name = "Вы"
         self.isJumping = False
+        self.isFalling = True
         self.jumpCounter = 0
         self.jumpWait = 0
         self.speed_x = 0
@@ -51,7 +52,7 @@ class Player(Entity):
             elif self.speed_x < 0:
                 self.speed_x += 2
 
-        if keys[pygame.K_SPACE] and not self.isJumping and self.jumpWait == 0:
+        if keys[pygame.K_SPACE] and not self.isJumping and self.jumpWait == 0 and not self.isFalling:
             self.isJumping = True
             self.jumpCounter = 10
             self.jumpWait = 20
@@ -77,9 +78,11 @@ class Player(Entity):
             else:
                 self.speed_x = 0
 
+        self.isFalling = True
         player_rect = pygame.Rect(self.x, self.y - self.speed_y, self.width, self.height)
         for tile in self.tiles_list:
-            if not player_rect.colliderect(tile): continue
+            if not player_rect.colliderect(tile):
+                continue
 
             if self.speed_y > 0:
                 self.speed_y = 0
@@ -91,6 +94,7 @@ class Player(Entity):
             else:
                 self.speed_y = 0
             self.jumpCounter = 0
+            self.isFalling = False
 
         self.x += self.speed_x
         self.y -= self.speed_y
